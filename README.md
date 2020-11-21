@@ -6,9 +6,9 @@
     </a>
 </p>
 
-## Project Description :
+## Project Description : Currency change
 
-This project was carried out as part of my training as an apprentice engineer at ECE Paris. It is an application developed in android allowing to convert money from one currency to another.
+This project was carried out as part of my training as an apprentice engineer at ECE Paris. It is an application developed in android allowing to convert money from one currency to another one.
 
   
 ## 💻 Built with
@@ -34,7 +34,7 @@ This project was carried out as part of my training as an apprentice engineer at
 
 ## 🛠️ Installation Steps
 
-To start or launch the project you need to install git command and Android Studio. If you are not familiar with these environments, please check :
+To start or launch the project you need to install git command and Android Studio. If you are not familiar with these environments, please check:
 - https://github.com/joshnh/Git-Commands for git commands
 - https://developer.android.com/studio  to start with Android Studio
 
