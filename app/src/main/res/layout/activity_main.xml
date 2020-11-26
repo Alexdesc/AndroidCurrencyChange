@@ -11,57 +11,17 @@
         android:layout_width="92dp"
         android:layout_height="54dp"
         android:layout_marginStart="156dp"
-        android:layout_marginTop="364dp"
+        android:layout_marginTop="388dp"
         android:text="@string/Button_convert"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/Label_current_monnnaie"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="88dp"
-        android:text="@string/curent_monnaie"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Spinner
-        android:id="@+id/current_spinner"
-        android:layout_width="171dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="128dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Spinner
-        android:id="@+id/dest_spinner"
-        android:layout_width="171dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="128dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/Label_Dest_monnaie"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
-        android:layout_marginEnd="72dp"
-        android:text="@string/dest_monnaie"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/Label_amont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="208dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="252dp"
         android:text="@string/Label_money"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,12 +31,44 @@
         android:id="@+id/Input_Box"
         android:layout_width="190dp"
         android:layout_height="47dp"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="252dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="296dp"
         android:hint="@string/hint"
+        android:inputType="numberDecimal"
         android:textColorHighlight="#3F51B5"
         android:textColorLink="#3F51B5"
-        android:inputType = "numberDecimal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/dest_spinner"
+        android:layout_width="171dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Label_Dest_monnaie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="252dp"
+        android:layout_marginEnd="64dp"
+        android:text="@string/dest_monnaie"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Result_Box"
+        android:layout_width="317dp"
+        android:layout_height="63dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="524dp"
+        android:text="..."
+        android:textAlignment="center"
+        android:textSize="28sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -85,47 +77,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="176dp"
-        android:layout_marginTop="448dp"
+        android:layout_marginTop="472dp"
         android:text="@string/result_box"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/Result_Box"
-        android:layout_width="317dp"
-        android:layout_height="63dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="500dp"
-        android:text="..."
-        android:textAlignment="center"
-        android:textSize="28sp"
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="185dp"
+        android:layout_height="140dp"
+        android:layout_marginStart="113dp"
+        android:layout_marginTop="56dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/Tx_Box"
-        android:layout_width="111dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="280dp"
-        android:layout_marginTop="668dp"
-        android:hint="@string/tx_box"
-        android:textColorHighlight="#3F51B5"
-        android:textColorLink="#3F51B5"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/Label_tx"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="624dp"
-        android:layout_marginEnd="100dp"
-        android:text="@string/Label_tx"
-        android:textSize="18sp"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_coin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
