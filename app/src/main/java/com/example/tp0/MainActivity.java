@@ -12,37 +12,26 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
-
-    // One euros equals to...
-    float euroToDollar;
-    float euroToYen;
-    float euroToPeso;
-    float dollarToPeso = (float) 21.39;
-    float dollarToYen = (float) 105.25;
-    float yenToPeso = (float) 0.2;
-
-    String EURO = "Euro";
-    String DOLLAR = "Dollar";
-    String PESO = "Peso";
-    String YEN = "Yen";
 
     Button ConvertButton;
     EditText valueToConvert;
-    EditText valueTx;
     TextView ResultBox;
-    Spinner Current_spinner;
     Spinner Dest_spinner;
+
+    ArrayList<String> currencyName = new ArrayList<String>();
+    CurrencyRateHandler CR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ConvertButton = findViewById(R.id.Convert_button);
-        Current_spinner = (Spinner) findViewById(R.id.current_spinner);
         Dest_spinner = (Spinner) findViewById(R.id.dest_spinner);
         valueToConvert = findViewById(R.id.Input_Box);
-        valueTx = findViewById(R.id.Tx_Box);
         ResultBox = findViewById(R.id.Result_Box);
 
         // Select the policy of the app
@@ -57,19 +46,19 @@ public class MainActivity extends AppCompatActivity {
         Log.e("Tag 1", "onStart: passed");
 
         // Retreve currency rate from internet
-        CurrencyRateHandler CR = new CurrencyRateHandler();
+        CR = new CurrencyRateHandler();
         CR.doInBackground();
 
+        // Add currency name to an array (use by the spinner
+        for(Map.Entry<String, String> entry : CR.currencyRate.entrySet()) {
+            currencyName.add(entry.getKey());
+        }
+
         // Spinner set variables with monnaie_array
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.monnaie_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_dropdown_item, currencyName);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Current_spinner.setAdapter(adapter);
         Dest_spinner.setAdapter(adapter);
 
-        euroToDollar = CR.getCurrencyRateByName("USD");
-        euroToYen = CR.getCurrencyRateByName("JPY");
-        euroToPeso = CR.getCurrencyRateByName("MXN");
 
         // On convert button clicked
         ConvertButton.setOnClickListener(new View.OnClickListener() {
@@ -77,12 +66,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.e("Tag 2", "onClick: passed");
                 String value = valueToConvert.getText().toString();
-                String Tx = valueTx.getText().toString();
-                String current_monnaie = Current_spinner.getSelectedItem().toString();
-                Log.e("Tag 3", "onClick: monnaie selected : " + current_monnaie);
                 String dest_monnaie = Dest_spinner.getSelectedItem().toString();
                 Log.e("Tag 4", "onClick: monnaie dest : " + dest_monnaie);
-                checkAndCompleteString(Tx,value);
+                checkAndCompleteString(value);
             }
         });
     }
@@ -93,36 +79,9 @@ public class MainActivity extends AppCompatActivity {
      * @return amont    converted amont of monnaie
      */
     float calculMonnaie(float amont){
-        String Current_monnaie = Current_spinner.getSelectedItem().toString();
         String Dest_monnaie = Dest_spinner.getSelectedItem().toString();
-        if(Current_monnaie.equals(EURO) && Dest_monnaie.equals(YEN))
-            return amont * euroToPeso;
-        if(Current_monnaie.equals(EURO) && Dest_monnaie.equals(PESO))
-            return amont * euroToPeso;
-        if(Current_monnaie.equals(EURO) && Dest_monnaie.equals(DOLLAR))
-            return amont * euroToDollar;
-        if(Current_monnaie.equals(DOLLAR) && Dest_monnaie.equals(PESO))
-            return amont * dollarToPeso;
-        if(Current_monnaie.equals(DOLLAR) && Dest_monnaie.equals(YEN))
-            return amont * dollarToYen;
-        if(Current_monnaie.equals(YEN) && Dest_monnaie.equals(PESO))
-            return amont * yenToPeso;
-        if(Current_monnaie.equals(YEN) && Dest_monnaie.equals(DOLLAR))
-            return amont / dollarToPeso;
-        if(Current_monnaie.equals(PESO) && Dest_monnaie.equals(DOLLAR))
-            return amont / dollarToPeso;
-        if(Current_monnaie.equals(PESO) && Dest_monnaie.equals(YEN))
-            return amont / yenToPeso;
-        if(Current_monnaie.equals(DOLLAR) && Dest_monnaie.equals(EURO))
-            return amont / euroToDollar;
-        if(Current_monnaie.equals(YEN) && Dest_monnaie.equals(EURO))
-            return amont / euroToYen;
-        if(Current_monnaie.equals(PESO) && Dest_monnaie.equals(EURO))
-            return amont / euroToPeso;
-        if(Current_monnaie.equals(Dest_monnaie))
-            return amont;
-        else
-            return 0;
+        float rate = CR.getCurrencyRateByName(Dest_monnaie);
+        return amont * rate;
 
     }
 
@@ -131,24 +90,12 @@ public class MainActivity extends AppCompatActivity {
      * @param Tx    input rate of currency (only for TP0-3)
      * @param value input of the amont of monnaie to convert
      */
-    void checkAndCompleteString(String Tx, String value){
+    void checkAndCompleteString(String value){
         // If the user put a , instead of .
         // Replace it
-        if(Tx.contains(",")){
-            Tx = Tx.replace(",",".");
-        }
         if(value.contains(",")){
             value = value.replace(",",".");
         }
-
-        // Verify is the user put only digit in the inputbox
-        // useless if we chose only digit keyboard on activity_main.xml
-        /*for(char c:value.toCharArray()){
-            if(!Character.isDigit(c)){
-                ResultBox.setText("Value compute is not a digit.");
-                return;
-            }
-        }*/
 
         float convertValue = calculMonnaie(Float.parseFloat(value));
         String symbole = getSymbole();
@@ -156,20 +103,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*
-     * Get the symbole to print from the spinner value
+     * Get the symbole to print from the spinner value (just sample)
      * @return  the string containing the currency symbole
      */
     String getSymbole(){
         String monnaie = Dest_spinner.getSelectedItem().toString();
-        if(monnaie.equals(EURO))
-            return " €";
-        if(monnaie.equals(DOLLAR))
+        if(monnaie.equals("USD"))
             return " $";
-        if(monnaie.equals(PESO))
+        if(monnaie.equals("BGN"))
+            return " лв";
+        if(monnaie.equals("GBP"))
+            return " £";
+        if(monnaie.equals("MXN"))
             return " Mex$";
-        if(monnaie.equals(YEN))
+        if(monnaie.equals("AUD"))
+            return " $";
+        if(monnaie.equals("CNY"))
+            return " ¥ /元";
+        if(monnaie.equals("JPY"))
             return " ¥";
+        if(monnaie.equals("HKD"))
+            return " HK$";
+        if(monnaie.equals("PHP"))
+            return " ₱";
+        if(monnaie.equals("SGD"))
+            return " $";
+        if(monnaie.equals("THB"))
+            return " ฿";
+        if(monnaie.equals("CHF"))
+            return " CHF";
+        if(monnaie.equals("DKK"))
+            return " kr";
+        if(monnaie.equals("PLN"))
+            return " zł";
+        if(monnaie.equals("RON"))
+            return " lei";
         else
-            return "unknown";
+            return " unknown";
     }
 }
