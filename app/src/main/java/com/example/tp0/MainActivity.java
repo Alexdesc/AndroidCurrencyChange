@@ -2,6 +2,7 @@ package com.example.tp0;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -12,12 +13,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     Button ConvertButton;
+    FloatingActionButton ParamView;
     EditText valueToConvert;
     TextView ResultBox;
     Spinner Dest_spinner;
@@ -30,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ConvertButton = findViewById(R.id.Convert_button);
+        ParamView = findViewById(R.id.ParamButton);
         Dest_spinner = (Spinner) findViewById(R.id.dest_spinner);
         valueToConvert = findViewById(R.id.Input_Box);
         ResultBox = findViewById(R.id.Result_Box);
@@ -71,7 +76,23 @@ public class MainActivity extends AppCompatActivity {
                 checkAndCompleteString(value);
             }
         });
+
+        // On ParamView button clicked
+        ParamView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("Tag 4", "onClick: Enter Param view...");
+                paramView(v);
+            }
+        });
     }
+
+    public void paramView(View v) {
+        Intent intent = new Intent(this, ParamActivity.class);
+        intent.putExtra("hashMap", CR.currencyRate);
+        startActivity(intent);
+    }
+
 
     /*
      * Convert the current monnaie into the chosen currency

@@ -6,25 +6,57 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/Convert_button"
-        android:layout_width="92dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="156dp"
-        android:layout_marginTop="388dp"
-        android:text="@string/Button_convert"
+    <TextView
+        android:id="@+id/Result_Box"
+        android:layout_width="317dp"
+        android:layout_height="63dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="496dp"
+        android:text="..."
+        android:textAlignment="center"
+        android:textSize="28sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="185dp"
+        android:layout_height="140dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_coin" />
 
     <TextView
         android:id="@+id/Label_amont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="252dp"
+        android:layout_marginTop="224dp"
         android:text="@string/Label_money"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Label_Dest_monnaie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="224dp"
+        android:layout_marginEnd="60dp"
+        android:text="@string/dest_monnaie"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/dest_spinner"
+        android:layout_width="171dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="272dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputEditText
@@ -32,7 +64,7 @@
         android:layout_width="190dp"
         android:layout_height="47dp"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="296dp"
+        android:layout_marginTop="268dp"
         android:hint="@string/hint"
         android:inputType="numberDecimal"
         android:textColorHighlight="#3F51B5"
@@ -40,35 +72,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Spinner
-        android:id="@+id/dest_spinner"
-        android:layout_width="171dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="300dp"
-        android:layout_marginEnd="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/Label_Dest_monnaie"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="252dp"
-        android:layout_marginEnd="64dp"
-        android:text="@string/dest_monnaie"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/Result_Box"
-        android:layout_width="317dp"
-        android:layout_height="63dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="524dp"
-        android:text="..."
-        android:textAlignment="center"
-        android:textSize="28sp"
+    <Button
+        android:id="@+id/Convert_button"
+        android:layout_width="92dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="156dp"
+        android:layout_marginTop="360dp"
+        android:text="@string/Button_convert"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -77,20 +87,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="176dp"
-        android:layout_marginTop="472dp"
+        android:layout_marginTop="444dp"
         android:text="@string/result_box"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="185dp"
-        android:layout_height="140dp"
-        android:layout_marginStart="113dp"
-        android:layout_marginTop="56dp"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/ParamButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="344dp"
+        android:layout_marginTop="520dp"
+        android:clickable="true"
+        app:backgroundTint="#33B5E5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_coin" />
+        app:srcCompat="@android:drawable/ic_menu_manage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
