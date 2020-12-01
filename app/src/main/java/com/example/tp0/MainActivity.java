@@ -1,6 +1,7 @@
 package com.example.tp0;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,8 +15,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,7 +31,10 @@ public class MainActivity extends AppCompatActivity {
     Spinner Dest_spinner;
 
     ArrayList<String> currencyName = new ArrayList<String>();
+    HashMap<String, String> HashMapCurrency;
     CurrencyRateHandler CR;
+
+    DataBaseHelper dataBaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +61,26 @@ public class MainActivity extends AppCompatActivity {
         CR = new CurrencyRateHandler();
         CR.doInBackground();
 
-        // Add currency name to an array (use by the spinner
-        for(Map.Entry<String, String> entry : CR.currencyRate.entrySet()) {
-            currencyName.add(entry.getKey());
+        DataBaseHelper databaseHelper = DataBaseHelper.getInstance(this);
+        HashMapCurrency = databaseHelper.getAllCurrency();
+
+        // If internet not connected, show a Snackbar message
+        if (!isInternetAvailable()){
+            View parentLayout = findViewById(android.R.id.content);
+            Snackbar snackbar = Snackbar.make(parentLayout, "Internet unavailable, please check connexion...", Snackbar.LENGTH_LONG);
+            snackbar.show();
+
+            // Add currency name to an array (use by the spinner) (From database)
+            for(Map.Entry<String, String> entry : HashMapCurrency.entrySet()) {
+                currencyName.add(entry.getKey());
+            }
+
+        }else {
+            // Add currency name to an array (use by the spinner) (From internet)
+            for(Map.Entry<String, String> entry : CR.currencyRate.entrySet()) {
+                currencyName.add(entry.getKey());
+                databaseHelper.addOrUpdateCurrency(entry.getKey(),entry.getValue());
+            }
         }
 
         // Spinner set variables with monnaie_array
@@ -85,12 +109,29 @@ public class MainActivity extends AppCompatActivity {
                 paramView(v);
             }
         });
+
     }
 
+    /*
+     * Open the param widow with currency list (listview)
+     * @param View     Actual view
+     */
     public void paramView(View v) {
         Intent intent = new Intent(this, ParamActivity.class);
-        intent.putExtra("hashMap", CR.currencyRate);
+        intent.putExtra("hashMap", HashMapCurrency);
         startActivity(intent);
+    }
+
+    /*
+     * Check connection stat on start
+     */
+    public boolean isInternetAvailable() {
+        try {
+            InetAddress ipAddr = InetAddress.getByName("google.com");
+            return !ipAddr.equals("");
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 
@@ -101,9 +142,13 @@ public class MainActivity extends AppCompatActivity {
      */
     float calculMonnaie(float amont){
         String Dest_monnaie = Dest_spinner.getSelectedItem().toString();
-        float rate = CR.getCurrencyRateByName(Dest_monnaie);
-        return amont * rate;
-
+        if(!isInternetAvailable()){
+            float rate = CR.getCurrencyRateByMap(HashMapCurrency,Dest_monnaie);
+            return amont * rate;
+        }else{
+            float rate = CR.getCurrencyRateByName(Dest_monnaie);
+            return amont * rate;
+        }
     }
 
     /*

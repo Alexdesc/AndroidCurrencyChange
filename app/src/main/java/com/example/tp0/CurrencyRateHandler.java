@@ -104,4 +104,19 @@ public class CurrencyRateHandler extends AsyncTask<String, String, String> {
         }
         return 0;
     }
+
+    /*
+     * Return currency value from the initialised HashMap
+     * @param   The map of currency (if not connected to the internet)
+     * @param   the currency to convert
+     */
+    float getCurrencyRateByMap(HashMap<String,String> currencyMap,String currency){
+        for(Map.Entry<String, String> entry : currencyMap.entrySet()) {
+            if(entry.getKey().equals(currency))
+                return Float.parseFloat(entry.getValue());
+            else
+                continue;
+        }
+        return 0;
+    }
 }
