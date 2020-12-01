@@ -26,33 +26,41 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static DataBaseHelper sInstance;
 
     /*
-     * Get the previous database contexte or create a new database
+     * Get the previous database context or create a new database
      * @param context    context of our app
      */
     public static synchronized DataBaseHelper getInstance(Context context) {
-        // Use the application context, which will ensure that you
-        // don't accidentally leak an Activity's context.
-        // See this article for more information: http://bit.ly/6LRzfx
         if (sInstance == null) {
             sInstance = new DataBaseHelper(context.getApplicationContext());
         }
         return sInstance;
     }
+    
 
+    /*
+     * Create a new database with the context app
+     * @param context    context of our app
+     */
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    // Called when the database connection is being configured.
-    // Configure database settings for things like foreign key support, write-ahead logging, etc.
+    /*
+     * Called when the database connection is being configured
+     * @param SQLiteDatabase    the concerne database
+     */
     @Override
     public void onConfigure(SQLiteDatabase db) {
         super.onConfigure(db);
         db.setForeignKeyConstraintsEnabled(true);
     }
 
-    // Called when the database is created for the FIRST time.
-    // If a database already exists on disk with the same DATABASE_NAME, this method will NOT be called.
+
+    /*
+     * Called when the database is created for the FIRST time
+     * If a database already exists on disk with the same DATABASE_NAME, this method will NOT be called
+     * @param SQLiteDatabase    the concerne database
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_CURRENCY_TABLE = "CREATE TABLE " + TABLE_CURRENCY +
@@ -64,6 +72,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_CURRENCY_TABLE);
     }
 
+
+    /*
+     * Called when upgrade the database
+     * @param SQLiteDatabase    the concerne database
+     * @param oldVersion        Use to compare database version
+     * @param newVersion        Use to compare database version
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion != newVersion) {
@@ -73,8 +88,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    /*
+     * Add or update a currency in the database
+     * @param currency    the currency name
+     * @param rate        the currency rate
+     */
     public long addOrUpdateCurrency(String currency, String rate) {
-        // The database connection is cached so it's not expensive to call getWriteableDatabase() multiple times.
         SQLiteDatabase db = getWritableDatabase();
         long currencyId = -1;
 
@@ -118,7 +137,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-
+    /*
+     * Get the database list of currency into a Hashmap
+     * @return HashMapCurrency    the currency hashmap from database
+     */
     public HashMap<String, String> getAllCurrency() {
         HashMap<String, String> HashMapCurrency = new HashMap<String, String>();
 
@@ -145,6 +167,5 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         return HashMapCurrency;
     }
-
 
 }
