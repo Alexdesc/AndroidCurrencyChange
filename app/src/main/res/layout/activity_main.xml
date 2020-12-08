@@ -6,6 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <Spinner
+        android:id="@+id/current_spinner"
+        android:layout_width="171dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="304dp"
+        android:layout_marginEnd="224dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/label_current_monnaie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="268dp"
+        android:layout_marginEnd="232dp"
+        android:text="@string/curent_monnaie"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/Result_Box"
         android:layout_width="317dp"
@@ -20,55 +40,61 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="185dp"
-        android:layout_height="140dp"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="28dp"
+        android:layout_width="137dp"
+        android:layout_height="119dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="138dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_coin" />
 
-    <TextView
-        android:id="@+id/Label_amont"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="224dp"
-        android:text="@string/Label_money"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
+    <Spinner
+        android:id="@+id/dest_spinner"
+        android:layout_width="171dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="304dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/Label_Dest_monnaie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="224dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginTop="268dp"
+        android:layout_marginEnd="48dp"
         android:text="@string/dest_monnaie"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Spinner
-        android:id="@+id/dest_spinner"
-        android:layout_width="171dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="272dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/Input_Box"
-        android:layout_width="190dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="268dp"
+        android:layout_width="197dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="200dp"
         android:hint="@string/hint"
         android:inputType="numberDecimal"
         android:textColorHighlight="#3F51B5"
         android:textColorLink="#3F51B5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Label_amont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="164dp"
+        android:layout_marginEnd="134dp"
+        android:text="@string/Label_money"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -77,7 +103,7 @@
         android:layout_width="92dp"
         android:layout_height="54dp"
         android:layout_marginStart="156dp"
-        android:layout_marginTop="360dp"
+        android:layout_marginTop="368dp"
         android:text="@string/Button_convert"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -97,8 +123,8 @@
         android:id="@+id/ParamButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="344dp"
-        android:layout_marginTop="520dp"
+        android:layout_marginStart="336dp"
+        android:layout_marginTop="528dp"
         android:clickable="true"
         app:backgroundTint="#33B5E5"
         app:layout_constraintStart_toStartOf="parent"

@@ -36,6 +36,7 @@ public class CurrencyRateHandler extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... strings) {
+        currencyRate.put("EUR","1");
         this.getXMLFromUrl("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml");
         return null;
     }

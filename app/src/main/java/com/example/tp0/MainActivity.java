@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     EditText valueToConvert;
     TextView ResultBox;
     Spinner Dest_spinner;
+    Spinner Current_spinner;
 
     ArrayList<String> currencyName = new ArrayList<String>();
     HashMap<String, String> HashMapCurrency;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         ConvertButton = findViewById(R.id.Convert_button);
         ParamView = findViewById(R.id.ParamButton);
         Dest_spinner = (Spinner) findViewById(R.id.dest_spinner);
+        Current_spinner = (Spinner) findViewById(R.id.current_spinner);
         valueToConvert = findViewById(R.id.Input_Box);
         ResultBox = findViewById(R.id.Result_Box);
 
@@ -87,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_dropdown_item, currencyName);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Dest_spinner.setAdapter(adapter);
+        Current_spinner.setAdapter(adapter);
 
 
         // On convert button clicked
@@ -142,12 +145,15 @@ public class MainActivity extends AppCompatActivity {
      */
     float calculMonnaie(float amont){
         String Dest_monnaie = Dest_spinner.getSelectedItem().toString();
+        String Current_monnaie = Current_spinner.getSelectedItem().toString();
         if(!isInternetAvailable()){
-            float rate = CR.getCurrencyRateByMap(HashMapCurrency,Dest_monnaie);
-            return amont * rate;
+            float rateDest = CR.getCurrencyRateByMap(HashMapCurrency,Dest_monnaie);
+            float rateCurrent = CR.getCurrencyRateByMap(HashMapCurrency,Current_monnaie);
+            return (((amont * 1)/rateCurrent)*rateDest)/1;
         }else{
-            float rate = CR.getCurrencyRateByName(Dest_monnaie);
-            return amont * rate;
+            float rateDest = CR.getCurrencyRateByName(Dest_monnaie);
+            float rateCurrent = CR.getCurrencyRateByName(Current_monnaie);
+            return (((amont * 1)/rateCurrent)*rateDest)/1;
         }
     }
 

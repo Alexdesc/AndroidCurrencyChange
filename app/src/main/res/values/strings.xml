@@ -5,7 +5,7 @@
     <string name="hint">Tape here...</string>
     <string name="result_box">Result :</string>
     <string name="tx_box">tx...</string>
-    <string name="Label_money">Amont of money (€) :</string>
+    <string name="Label_money">Amont of money :</string>
     <string name="Label_tx">tx...</string>
     <string name="curent_monnaie">Current monnaie :</string>
     <string name="dest_monnaie">Dest monnaie :</string>
