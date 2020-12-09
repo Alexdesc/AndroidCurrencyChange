@@ -9,5 +9,8 @@
     <string name="Label_tx">tx...</string>
     <string name="curent_monnaie">Current monnaie :</string>
     <string name="dest_monnaie">Dest monnaie :</string>
+    <string name="change_monnaie">Currency to modify :</string>
+    <string name="Button_change_rate">Modify</string>
+    <string name="Label_rate">New rate :</string>
 
 </resources>

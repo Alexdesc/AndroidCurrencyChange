@@ -30,6 +30,10 @@ public class ParamActivity extends AppCompatActivity {
         showCurrency(hashMap);
     }
 
+    /*
+     * Show currency from database into listview
+     * @param currency    the hashmap of all currency
+     */
     public void showCurrency(HashMap<String, String> currency) {
         // Add key and Value name to an array (use by the listview)
         currencyName.add("\tCurrency : \t\t Rate :");

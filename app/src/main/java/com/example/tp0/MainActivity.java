@@ -1,7 +1,6 @@
 package com.example.tp0;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button ConvertButton;
     FloatingActionButton ParamView;
+    FloatingActionButton ModifyView;
     EditText valueToConvert;
     TextView ResultBox;
     Spinner Dest_spinner;
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     HashMap<String, String> HashMapCurrency;
     CurrencyRateHandler CR;
 
-    DataBaseHelper dataBaseHelper;
+    DataBaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ConvertButton = findViewById(R.id.Convert_button);
         ParamView = findViewById(R.id.ParamButton);
+        ModifyView = findViewById(R.id.ModifyButton);
         Dest_spinner = (Spinner) findViewById(R.id.dest_spinner);
         Current_spinner = (Spinner) findViewById(R.id.current_spinner);
         valueToConvert = findViewById(R.id.Input_Box);
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }else {
+            ModifyView.hide();
             // Add currency name to an array (use by the spinner) (From internet)
             for(Map.Entry<String, String> entry : CR.currencyRate.entrySet()) {
                 currencyName.add(entry.getKey());
@@ -108,19 +110,38 @@ public class MainActivity extends AppCompatActivity {
         ParamView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("Tag 4", "onClick: Enter Param view...");
+                Log.e("Tag Param", "onClick: Enter Param view...");
                 paramView(v);
+            }
+        });
+
+        // On ParamView button clicked
+        ModifyView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("Tag Modify", "onClick: Enter Modify view...");
+                modifyView(v);
             }
         });
 
     }
 
     /*
-     * Open the param widow with currency list (listview)
+     * Open the param window with currency list (listview)
      * @param View     Actual view
      */
     public void paramView(View v) {
         Intent intent = new Intent(this, ParamActivity.class);
+        intent.putExtra("hashMap", HashMapCurrency);
+        startActivity(intent);
+    }
+
+    /*
+     * Open the modify window, you can modify rate is offline
+     * @param View     Actual view
+     */
+    public void modifyView(View v) {
+        Intent intent = new Intent(this, ModifyActivity.class);
         intent.putExtra("hashMap", HashMapCurrency);
         startActivity(intent);
     }
@@ -210,6 +231,8 @@ public class MainActivity extends AppCompatActivity {
             return " zł";
         if(monnaie.equals("RON"))
             return " lei";
+        if(monnaie.equals("EUR"))
+            return " €";
         else
             return " unknown";
     }
