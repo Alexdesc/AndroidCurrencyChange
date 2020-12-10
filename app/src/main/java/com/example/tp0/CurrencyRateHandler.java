@@ -36,6 +36,7 @@ public class CurrencyRateHandler extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... strings) {
+        // Add Euros because not on XML from ecb
         currencyRate.put("EUR","1");
         this.getXMLFromUrl("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml");
         return null;
@@ -46,7 +47,7 @@ public class CurrencyRateHandler extends AsyncTask<String, String, String> {
      * @param   the chosen url
      */
     public void getXMLFromUrl(String ThisURL) {
-        Log.e("Tag 1 Bis", "getXMLFromUrl: launched ");
+        Log.e("Tag currency handler 1", "getXMLFromUrl: launched ");
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;
         try {
@@ -55,14 +56,14 @@ public class CurrencyRateHandler extends AsyncTask<String, String, String> {
             e.printStackTrace();
         }
         Document document = null;
-        Log.e("Tag 2 Bis", "getXMLFromUrl: document created ");
+        Log.e("Tag currency handler 2", "getXMLFromUrl: document created ");
 
         try {
             URL url = new URL(ThisURL);
             InputSource xml = new InputSource(url.openStream());
-            Log.e("Tag 3 Bis", "getXMLFromUrl: url opened in outputStream");
+            Log.e("Tag currency handler 3", "getXMLFromUrl: url opened in outputStream");
             document = builder.parse(xml);
-            Log.e("Tag 4 Bis", "getXMLFromUrl: document parse");
+            Log.e("Tag currency handler 4", "getXMLFromUrl: document parse");
 
             XPathFactory xPathfactory = XPathFactory.newInstance();
             XPath xpath = xPathfactory.newXPath();
@@ -88,7 +89,7 @@ public class CurrencyRateHandler extends AsyncTask<String, String, String> {
         for(Map.Entry<String, String> entry : currencyRate.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            Log.e("Tag Bis Hash","Key : " + key + " value : " + value);
+            Log.e("Tag currency handler","Key : " + key + " value : " + value);
         }
     }
 
