@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Link all widgets on the homepage to variables
         ConvertButton = findViewById(R.id.Convert_button);
         ParamView = findViewById(R.id.ParamButton);
         ModifyView = findViewById(R.id.ModifyButton);
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.e("Tag 1", "onStart: passed");
+        Log.e("Tag main 1", "onStart: passed");
 
         // Retreve currency rate from internet
         CR = new CurrencyRateHandler();
@@ -98,10 +100,10 @@ public class MainActivity extends AppCompatActivity {
         ConvertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("Tag 2", "onClick: passed");
+                Log.e("Tag main 2", "onClick: passed");
                 String value = valueToConvert.getText().toString();
                 String dest_monnaie = Dest_spinner.getSelectedItem().toString();
-                Log.e("Tag 4", "onClick: monnaie dest : " + dest_monnaie);
+                Log.e("Tag main 3", "onClick: monnaie dest : " + dest_monnaie);
                 checkAndCompleteString(value);
             }
         });
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // On ParamView button clicked
+        // On ModifyView button clicked
         ModifyView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
     /*
      * Check connection stat on start
+     * @return      true if internet enabled false otherwise
      */
     public boolean isInternetAvailable() {
         try {
@@ -165,8 +168,11 @@ public class MainActivity extends AppCompatActivity {
      * @return amont    converted amont of monnaie
      */
     float calculMonnaie(float amont){
+        // Finds currency name from spinner
         String Dest_monnaie = Dest_spinner.getSelectedItem().toString();
         String Current_monnaie = Current_spinner.getSelectedItem().toString();
+        // If internet available, use currency from internet
+        // Else use currency from database
         if(!isInternetAvailable()){
             float rateDest = CR.getCurrencyRateByMap(HashMapCurrency,Dest_monnaie);
             float rateCurrent = CR.getCurrencyRateByMap(HashMapCurrency,Current_monnaie);
@@ -196,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*
-     * Get the symbole to print from the spinner value (just sample)
+     * Get the symbole to print from the spinner value (just sample not all currency are in this list)
      * @return  the string containing the currency symbole
      */
     String getSymbole(){

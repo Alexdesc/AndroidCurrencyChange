@@ -32,6 +32,7 @@ public class ModifyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify);
+        // Link all widgets on the modifypage to variables
         ModifyButton = findViewById(R.id.rate_modify_button);
         rateToModify = findViewById(R.id.input_rate);
         currency_spinner = findViewById(R.id.currency_spinner);
@@ -40,6 +41,8 @@ public class ModifyActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        // Get instance of database to retrieve currency name for the spinner
         DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(this);
         HashMapCurrency = dataBaseHelper.getAllCurrency();
         addSpinnerCurrency(HashMapCurrency);
@@ -63,7 +66,7 @@ public class ModifyActivity extends AppCompatActivity {
      * @param currency    the hashmap of all currency
      */
     void addSpinnerCurrency(HashMap<String, String> hash){
-        // Add currency name to list
+        // Add currency name to spinner list
         for(Map.Entry<String, String> entry : hash.entrySet()) {
             currencyName.add(entry.getKey());
         }
@@ -79,7 +82,7 @@ public class ModifyActivity extends AppCompatActivity {
      * @param rate        the new rate of currency
      */
     void updateRate(String currency, String rate){
-        // Retrieve the database and update currency rate
+        // Retrieve the database instance and update currency rate
         DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(this);
         dataBaseHelper.addOrUpdateCurrency(currency,rate);
     }

@@ -63,6 +63,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // We use SQL requests to create table
         String CREATE_CURRENCY_TABLE = "CREATE TABLE " + TABLE_CURRENCY +
                 "(" +
                 KEY_CURRENCY_ID + " INTEGER PRIMARY KEY," + // Define a primary key
@@ -81,6 +82,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // SQL request to delete database and recreate
         if (oldVersion != newVersion) {
             // Drop old table and recreate it
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_CURRENCY);
@@ -103,13 +105,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             values.put(KEY_CURRENCY_NAME, currency);
             values.put(KEY_CURRENCY_RATE, rate);
 
-            // First try to update the user in case the user already exists in the database
-            // This assumes userNames are unique
+            // First try to update the currency in case the currency already exists in the database
+            // This assumes currencyName are unique
             int rows = db.update(TABLE_CURRENCY, values, KEY_CURRENCY_NAME + "= ?", new String[]{currency});
 
             // Check if update succeeded
             if (rows == 1) {
-                // Get the primary key of the user we just updated
+                // Get the primary key of the currency we just updated
                 String usersSelectQuery = String.format("SELECT %s FROM %s WHERE %s = ?",
                         KEY_CURRENCY_ID, TABLE_CURRENCY, KEY_CURRENCY_NAME);
                 Cursor cursor = db.rawQuery(usersSelectQuery, new String[]{String.valueOf(currency)});
@@ -124,7 +126,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                     }
                 }
             } else {
-                // user with this userName did not already exist, so insert new user
+                // currency with this currencyName did not already exist, so insert new currency
                 currencyId = db.insertOrThrow(TABLE_CURRENCY, null, values);
                 db.setTransactionSuccessful();
             }
@@ -138,8 +140,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
     /*
-     * Get the database list of currency into a Hashmap
-     * @return HashMapCurrency    the currency hashmap from database
+     * Get the database list of currency into a HashMap
+     * @return HashMapCurrency    the currency hashMap from database
      */
     public HashMap<String, String> getAllCurrency() {
         HashMap<String, String> HashMapCurrency = new HashMap<String, String>();
@@ -147,7 +149,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         // Select all data from currencyDatabase
         String POSTS_SELECT_QUERY = String.format("SELECT * FROM %s ", TABLE_CURRENCY);
 
-        // Move into all data from database and add it to the hashmap
+        // Move into all data from database and add it to the HashMap
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(POSTS_SELECT_QUERY, null);
         try {
