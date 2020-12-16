@@ -15,6 +15,11 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -35,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
     HashMap<String, String> HashMapCurrency;
     CurrencyRateHandler CR;
 
-    DataBaseHelper databaseHelper;
+    FirebaseDatabase FirebaseDatabase;
+    DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         // An other param is add in the AndroidManifest.xml
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
     }
 
     @Override
@@ -62,12 +69,13 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         Log.e("Tag main 1", "onStart: passed");
 
-        // Retreve currency rate from internet
-        CR = new CurrencyRateHandler();
-        CR.doInBackground();
-
-        DataBaseHelper databaseHelper = DataBaseHelper.getInstance(this);
+        final DataBaseHelper databaseHelper = DataBaseHelper.getInstance(this);
         HashMapCurrency = databaseHelper.getAllCurrency();
+
+        // Add currency name to an array (use by the spinner) (From database)
+        for(Map.Entry<String, String> entry : HashMapCurrency.entrySet()) {
+            currencyName.add(entry.getKey());
+        }
 
         // If internet not connected, show a Snackbar message
         if (!isInternetAvailable()){
@@ -75,18 +83,18 @@ public class MainActivity extends AppCompatActivity {
             Snackbar snackbar = Snackbar.make(parentLayout, "Internet unavailable, please check connexion...", Snackbar.LENGTH_LONG);
             snackbar.show();
 
-            // Add currency name to an array (use by the spinner) (From database)
-            for(Map.Entry<String, String> entry : HashMapCurrency.entrySet()) {
-                currencyName.add(entry.getKey());
+        }else {
+            // Retreve currency rate from internet
+            CR = new CurrencyRateHandler();
+            CR.doInBackground();
+
+            // Update firebase data
+            // If there is new data, update automatically
+            for(Map.Entry<String, String> entry : CR.currencyRate.entrySet()) {
+                writeInToFirebase(entry.getKey(),entry.getValue());
             }
 
-        }else {
             ModifyView.hide();
-            // Add currency name to an array (use by the spinner) (From internet)
-            for(Map.Entry<String, String> entry : CR.currencyRate.entrySet()) {
-                currencyName.add(entry.getKey());
-                databaseHelper.addOrUpdateCurrency(entry.getKey(),entry.getValue());
-            }
         }
 
         // Spinner set variables with monnaie_array
@@ -94,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Dest_spinner.setAdapter(adapter);
         Current_spinner.setAdapter(adapter);
-
 
         // On convert button clicked
         ConvertButton.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +130,29 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.e("Tag Modify", "onClick: Enter Modify view...");
                 modifyView(v);
+            }
+        });
+
+        // If data from database are changed
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String key = dataSnapshot.getKey();
+                String value = dataSnapshot.getValue(String.class);
+                Log.e("Tag Firebase", "Reading update on " +  key + " new rate : " + value);
+                // Update in phone database
+                databaseHelper.addOrUpdateCurrency(dataSnapshot.getKey(),dataSnapshot.getValue(String.class));
+                // Refresh the used hashMap
+                HashMapCurrency = databaseHelper.getAllCurrency();
+                Log.e("Tag Database", "Database updated !");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.e("Tag Firebase", "Reading from database failed !");
             }
         });
 
@@ -161,6 +191,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * Write into firebase reelTime Database
+     * @param      key (name of currency)
+     * @param      value (rate of currency)
+     */
+    public void writeInToFirebase(String key, String value){
+        // Write into firebase dataBase
+        FirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = FirebaseDatabase.getReference("Currency/"+ key);
+        myRef.setValue(value);
+        Log.e("Tag Firebase", "writing into database..");
+    }
 
     /*
      * Convert the current monnaie into the chosen currency

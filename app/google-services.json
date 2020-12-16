@@ -1,13 +1,14 @@
 {
   "project_info": {
     "project_number": "983486862051",
+    "firebase_url": "https://androidappcurrency-default-rtdb.firebaseio.com",
     "project_id": "androidappcurrency",
     "storage_bucket": "androidappcurrency.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:983486862051:android:307aa6620a8026476eebd6",
+        "mobilesdk_app_id": "1:983486862051:android:3986207ce79b59966eebd6",
         "android_client_info": {
           "package_name": "com.example.tp0"
         }
