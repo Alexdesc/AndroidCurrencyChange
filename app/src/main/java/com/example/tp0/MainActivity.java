@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     Button ConvertButton;
     FloatingActionButton ParamView;
     FloatingActionButton ModifyView;
+    FloatingActionButton MapsView;
     EditText valueToConvert;
     TextView ResultBox;
     Spinner Dest_spinner;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         ConvertButton = findViewById(R.id.Convert_button);
         ParamView = findViewById(R.id.ParamButton);
         ModifyView = findViewById(R.id.ModifyButton);
+        MapsView = findViewById((R.id.mapsButton));
         Dest_spinner = (Spinner) findViewById(R.id.dest_spinner);
         Current_spinner = (Spinner) findViewById(R.id.current_spinner);
         valueToConvert = findViewById(R.id.Input_Box);
@@ -82,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
             View parentLayout = findViewById(android.R.id.content);
             Snackbar snackbar = Snackbar.make(parentLayout, "Internet unavailable, please check connexion...", Snackbar.LENGTH_LONG);
             snackbar.show();
+            // Not connected to internet, can't check current location, hide the button
+            MapsView.hide();
 
         }else {
             // Retreve currency rate from internet
@@ -93,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             for(Map.Entry<String, String> entry : CR.currencyRate.entrySet()) {
                 writeInToFirebase(entry.getKey(),entry.getValue());
             }
-
+            // Internet connected, no need to manually modify currency rate
             ModifyView.hide();
         }
 
@@ -130,6 +134,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.e("Tag Modify", "onClick: Enter Modify view...");
                 modifyView(v);
+            }
+        });
+
+        // On ModifyView button clicked
+        MapsView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("Tag Modify", "onClick: Enter Modify view...");
+                mapsView(v);
             }
         });
 
@@ -174,6 +187,16 @@ public class MainActivity extends AppCompatActivity {
      */
     public void modifyView(View v) {
         Intent intent = new Intent(this, ModifyActivity.class);
+        intent.putExtra("hashMap", HashMapCurrency);
+        startActivity(intent);
+    }
+
+    /*
+     * Open the maps window
+     * @param View     Actual view
+     */
+    public void mapsView(View v) {
+        Intent intent = new Intent(this, MapsActivity.class);
         intent.putExtra("hashMap", HashMapCurrency);
         startActivity(intent);
     }
