@@ -132,7 +132,7 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
             List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
             if (addresses.size() > 0)
             {
-                Log.e("Tag Maps", "Country : " + currentCountry);
+                Log.e("Tag Maps", "Country : " + addresses.get(0).getCountryName());
                 return addresses.get(0).getCountryName();
             }
 
@@ -238,7 +238,7 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
         if(country.equals("Romania"))
             return "RON";
         if(country.equals("France") || country.equals("Germany") || country.equals("Spain") || country.equals("Portugal"))// and many other...
-            return " €";
+            return "EUR";
         else
             return " unknown";
     }
@@ -249,7 +249,7 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
      * @return  the string containing the currency symbole
      */
     public String getSymbole(){
-        String monnaie = destCountry;
+        String monnaie = getTrigramByName(destCountry);
         if(monnaie.equals("USD"))
             return " $";
         if(monnaie.equals("BGN"))
