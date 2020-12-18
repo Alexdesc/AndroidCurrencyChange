@@ -82,8 +82,8 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
             @Override
             public void onClick(View v) {
                 float convertValue = calculMonnaie(Float.parseFloat(amount_input.getText().toString()));
-                String symbole = getSymbole();
-                result.setText(Float.toString(convertValue) + symbole);
+                String symbol = getSymbole();
+                result.setText(Float.toString(convertValue) + symbol);
             }
         });
     }
@@ -175,15 +175,15 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
 
     /*
      * Convert the current monnaie into the chosen currency
-     * @param amont     amont of monnai to convert
-     * @return amont    converted amont of monnaie
+     * @param amount     amount of monnai to convert
+     * @return amount    converted amount of monnaie
      */
-    float calculMonnaie(float amont){
+    float calculMonnaie(float amount){
         String trigDest = getTrigramByName(destCountry);
         String trigCurrent = getTrigramByName(currentCountry);
         float rateDest = getCurrencyRateByName(trigDest);
         float rateCurrent = getCurrencyRateByName(trigCurrent);
-        return (((amont * 1)/rateCurrent)*rateDest)/1;
+        return (((amount * 1)/rateCurrent)*rateDest)/1;
     }
 
     /*
@@ -202,8 +202,8 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
 
 
     /*
-     * Get the symbole to print from the spinner value (just sample not all currency are in this list)
-     * @return  the string containing the currency symbole
+     * Get the symbol to print from the spinner value (just sample not all currency are in this list)
+     * @return  the string containing the currency symbol
      */
     public String getTrigramByName(String theCountry){
         String country = theCountry;

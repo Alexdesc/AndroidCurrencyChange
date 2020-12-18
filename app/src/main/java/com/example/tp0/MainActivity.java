@@ -121,6 +121,29 @@ public class MainActivity extends AppCompatActivity {
             }
             // Internet connected, no need to manually modify currency rate
             ModifyView.hide();
+
+            // If data from database are changed
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // This method is called once with the initial value and again
+                    // whenever data at this location is updated.
+                    String key = dataSnapshot.getKey();
+                    String value = dataSnapshot.getValue(String.class);
+                    Log.e("Tag Firebase", "Reading update on " +  key + " new rate : " + value);
+                    // Update in phone database
+                    databaseHelper.addOrUpdateCurrency(dataSnapshot.getKey(),dataSnapshot.getValue(String.class));
+                    // Refresh the used hashMap
+                    HashMapCurrency = databaseHelper.getAllCurrency();
+                    Log.e("Tag Database", "Database updated !");
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.e("Tag Firebase", "Reading from database failed !");
+                }
+            });
         }
 
         // Add currency name to an array (use by the spinner) (From database)
@@ -170,29 +193,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.e("Tag Modify", "onClick: Enter Modify view...");
                 mapsView(v);
-            }
-        });
-
-        // If data from database are changed
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String key = dataSnapshot.getKey();
-                String value = dataSnapshot.getValue(String.class);
-                Log.e("Tag Firebase", "Reading update on " +  key + " new rate : " + value);
-                // Update in phone database
-                databaseHelper.addOrUpdateCurrency(dataSnapshot.getKey(),dataSnapshot.getValue(String.class));
-                // Refresh the used hashMap
-                HashMapCurrency = databaseHelper.getAllCurrency();
-                Log.e("Tag Database", "Database updated !");
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.e("Tag Firebase", "Reading from database failed !");
             }
         });
 
