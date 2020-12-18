@@ -14,6 +14,7 @@
     <string name="Label_rate">New rate :</string>
     <string name="Dest_Location">Enter the destination address :</string>
     <string name="Current_location">Current location :</string>
-    <string name="Button_locate">Locate and convert</string>
+    <string name="Button_locate">Locate</string>
+    <string name="Text_waiting_for_dat">...</string>
 
 </resources>

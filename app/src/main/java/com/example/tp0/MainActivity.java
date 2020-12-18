@@ -1,8 +1,12 @@
 package com.example.tp0;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -64,6 +68,28 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
+        // Runtime permission Internet
+        if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.INTERNET)
+                != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                    Manifest.permission.INTERNET
+            },100);
+        }
+        // Runtime permission Wifi states
+        if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_WIFI_STATE)
+                != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                    Manifest.permission.ACCESS_WIFI_STATE
+            },100);
+        }
+        // Runtime permission network states
+        if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_NETWORK_STATE)
+                != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                    Manifest.permission.ACCESS_NETWORK_STATE
+            },100);
+        }
+
     }
 
     @Override
@@ -73,11 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
         final DataBaseHelper databaseHelper = DataBaseHelper.getInstance(this);
         HashMapCurrency = databaseHelper.getAllCurrency();
-
-        // Add currency name to an array (use by the spinner) (From database)
-        for(Map.Entry<String, String> entry : HashMapCurrency.entrySet()) {
-            currencyName.add(entry.getKey());
-        }
 
         // If internet not connected, show a Snackbar message
         if (!isInternetAvailable()){
@@ -96,9 +117,15 @@ public class MainActivity extends AppCompatActivity {
             // If there is new data, update automatically
             for(Map.Entry<String, String> entry : CR.currencyRate.entrySet()) {
                 writeInToFirebase(entry.getKey(),entry.getValue());
+                databaseHelper.addOrUpdateCurrency(entry.getKey(),entry.getValue());
             }
             // Internet connected, no need to manually modify currency rate
             ModifyView.hide();
+        }
+
+        // Add currency name to an array (use by the spinner) (From database)
+        for(Map.Entry<String, String> entry : HashMapCurrency.entrySet()) {
+            currencyName.add(entry.getKey());
         }
 
         // Spinner set variables with monnaie_array
